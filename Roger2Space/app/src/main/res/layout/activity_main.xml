@@ -52,12 +52,32 @@
             android:layout_height="match_parent"
             android:id="@+id/screen_1"
             android:visibility="visible">
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="50dp"
+
+            <ImageButton
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:id="@+id/butPlayAnim1"
+                android:background="@drawable/ic_animation_bouton_play_1"/>
+
+            <ImageButton
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:id="@+id/butPlayAnim2"
+                android:background="@drawable/ic_animation_bouton_play_2"/>
+
+            <ImageButton
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
                 android:id="@+id/butPlay"
-                android:text="PLAY"/>
+                android:background="@drawable/ic_bouton_play"/>
+
+
         </RelativeLayout>
 
 

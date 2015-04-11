@@ -16,6 +16,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AbsoluteLayout;
 import android.widget.Button;
 import android.widget.Toast;
@@ -30,6 +32,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
+import java.util.Random;
 
 
 public class MainActivity extends FragmentActivity {
@@ -45,7 +48,8 @@ public class MainActivity extends FragmentActivity {
     Float mButDragNDrop_x;
     Float mButDragNDrop_y;
 
-
+    View butPlayAnim1;
+    View butPlayAnim2;
     View mRootView;
 
     MediaPlayer mMediaPlayer;
@@ -102,10 +106,13 @@ public class MainActivity extends FragmentActivity {
                 mScreen_1.setVisibility(View.INVISIBLE);
                 mScreen_2.setVisibility(View.VISIBLE);
 
-                mMediaPlayer = startRandomMusic();
+                startRandomMusic();
             }
         });
-
+        butPlayAnim1 = findViewById(R.id.butPlayAnim1);
+        butPlayAnim2 = findViewById(R.id.butPlayAnim2);
+        Animation logoMoveAnimation = AnimationUtils.loadAnimation(this, R.anim.animation_scale);
+        butPlayAnim1.startAnimation(logoMoveAnimation);
 
 
 
@@ -184,24 +191,26 @@ public class MainActivity extends FragmentActivity {
 
 
 
-    public MediaPlayer startRandomMusic() {
+    public void startRandomMusic() {
+        mMediaPlayer = new MediaPlayer();
         new HttpAsyncTask().execute(URL_LIST + URL_GET_LIST);
 
-        MediaPlayer mediaPlayer = new MediaPlayer();
 
-        return mediaPlayer;
+
     }
 
 
-    public void startThisStream(MediaPlayer mediaPlayer, String url){
+    public void startThisStream(String music){
         try {
-            mediaPlayer.setDataSource(url);
+            String musicToPlay = URL_LIST+music;
+            Log.e("Start this music ",musicToPlay);
+            mMediaPlayer.setDataSource(musicToPlay);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        mediaPlayer.setOnPreparedListener(prepareListener);
-        mediaPlayer.prepareAsync();
+        mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        mMediaPlayer.setOnPreparedListener(prepareListener);
+        mMediaPlayer.prepareAsync();
     }
 
     private MediaPlayer.OnPreparedListener prepareListener = new MediaPlayer.OnPreparedListener(){
@@ -248,7 +257,7 @@ public class MainActivity extends FragmentActivity {
         String line = "";
         String result = "";
         while((line = bufferedReader.readLine()) != null)
-            result += line;
+            result +=  line + "\n";
 
         inputStream.close();
         return result;
@@ -267,8 +276,11 @@ public class MainActivity extends FragmentActivity {
             Toast.makeText(getBaseContext(), "Received!", Toast.LENGTH_LONG).show();
 
             String[] separated = result.split("\n");
-            for(String sMusic : separated)
-                Log.e("RESULTAT : ",sMusic);
+            Random randomGenerator = new Random();
+            int randomInt = randomGenerator.nextInt(separated.length-1);
+            String sMusic = separated[randomInt];
+            Log.e("Start Music : ", sMusic);
+            startThisStream(sMusic);
         }
     }
 }
