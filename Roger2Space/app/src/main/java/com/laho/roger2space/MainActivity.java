@@ -72,6 +72,10 @@ public class MainActivity extends FragmentActivity {
 
     String profile_urlPicture;
     ImageView mImgProfilePicture;
+    String profile_name;
+
+
+    ImageView[] mButChoix;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,8 +96,8 @@ public class MainActivity extends FragmentActivity {
             String modifiedUrl = profile_urlPicture.substring(0, profile_urlPicture.length() - 2) + mImgProfilePicture.getMeasuredWidth();
             new LoadProfileImage(mImgProfilePicture).execute(modifiedUrl);
                 // name
-            String sName = getIntent().getStringExtra("name");
-            ((TextView)findViewById(R.id.profileName)).setText(sName);
+            profile_name = getIntent().getStringExtra("name");
+            ((TextView)findViewById(R.id.profileName)).setText(profile_name);
 
 
 
@@ -220,6 +224,24 @@ public class MainActivity extends FragmentActivity {
                     return true;
                 }
             });
+
+
+
+
+
+            // Get choice buttons
+            mButChoix = new ImageView[8];
+            for(int i=0; i<8; i++){
+                mButChoix[i] = (ImageView)findViewById(getResources().getIdentifier("choix_"+(i+1), "id", getPackageName()));
+                final int num = i+1;
+                mButChoix[i].setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(getBaseContext(), "HEYY you did the "+(num)+" choice !", Toast.LENGTH_LONG).show();
+                        startRandomMusic();
+                    }
+                });
+            }
 
         }catch (Exception e){
             e.printStackTrace();
@@ -352,7 +374,6 @@ public class MainActivity extends FragmentActivity {
         // onPostExecute displays the results of the AsyncTask.
         @Override
         protected void onPostExecute(String result) {
-            Toast.makeText(getBaseContext(), "Received!", Toast.LENGTH_LONG).show();
 
             String[] separated = result.split("\n");
             Random randomGenerator = new Random();
@@ -360,6 +381,8 @@ public class MainActivity extends FragmentActivity {
             String sMusic = separated[randomInt];
             Log.e("Start Music : ", sMusic);
             startThisStream(sMusic);
+
+            mButDragNDrop.setText(sMusic);
         }
     }
 

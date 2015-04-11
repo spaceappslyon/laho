@@ -113,24 +113,29 @@
                     android:layout_width="match_parent"
                     android:layout_height="1px"
                     android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:padding="15dp">
+                    android:orientation="horizontal">
 
-                    <Button
+                    <ImageView
                         android:layout_width="1px"
                         android:layout_height="match_parent"
-                        android:text="Choix 1"
-                        android:layout_weight="1"/>
-                    <Button
+                        android:src="@drawable/ca_1_launching_spacecraft"
+                        android:layout_weight="1"
+                        android:scaleType="fitCenter"
+                        android:id="@+id/choix_1"/>
+                    <ImageView
                         android:layout_width="1px"
                         android:layout_height="match_parent"
-                        android:text="Choix 2"
-                        android:layout_weight="1"/>
-                    <Button
+                        android:layout_weight="1"
+                        android:src="@drawable/ca_2_space_sounds"
+                        android:scaleType="fitCenter"
+                        android:id="@+id/choix_2"/>
+                    <ImageView
                         android:layout_width="1px"
                         android:layout_height="match_parent"
-                        android:text="Choix 3"
-                        android:layout_weight="1"/>
+                        android:src="@drawable/ca_1_launching_spacecraft"
+                        android:scaleType="fitCenter"
+                        android:layout_weight="1"
+                        android:id="@+id/choix_3"/>
 
                 </LinearLayout>
 
@@ -140,23 +145,26 @@
                     android:layout_width="match_parent"
                     android:layout_height="1px"
                     android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:padding="15dp">
+                    android:orientation="horizontal">
 
-                    <Button
+                    <ImageView
                         android:layout_width="1px"
                         android:layout_height="match_parent"
-                        android:text="Choix 4"
-                        android:layout_weight="1"/>
+                        android:src="@drawable/ca_1_launching_spacecraft"
+                        android:scaleType="fitCenter"
+                        android:layout_weight="1"
+                        android:id="@+id/choix_4"/>
                     <View
                         android:layout_width="1px"
                         android:layout_height="match_parent"
                         android:layout_weight="1"/>
-                    <Button
+                    <ImageView
                         android:layout_width="1px"
                         android:layout_height="match_parent"
-                        android:text="Choix 5"
-                        android:layout_weight="1"/>
+                        android:src="@drawable/ca_1_launching_spacecraft"
+                        android:scaleType="fitCenter"
+                        android:layout_weight="1"
+                        android:id="@+id/choix_5"/>
 
                 </LinearLayout>
 
@@ -165,24 +173,29 @@
                     android:layout_width="match_parent"
                     android:layout_height="1px"
                     android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:padding="15dp">
+                    android:orientation="horizontal">
 
-                    <Button
+                    <ImageView
                         android:layout_width="1px"
                         android:layout_height="match_parent"
-                        android:text="Choix 6"
-                        android:layout_weight="1"/>
-                    <Button
+                        android:src="@drawable/ca_1_launching_spacecraft"
+                        android:scaleType="fitCenter"
+                        android:layout_weight="1"
+                        android:id="@+id/choix_6"/>
+                    <ImageView
                         android:layout_width="1px"
                         android:layout_height="match_parent"
-                        android:text="Choix 7"
-                        android:layout_weight="1"/>
-                    <Button
+                        android:src="@drawable/ca_1_launching_spacecraft"
+                        android:scaleType="fitCenter"
+                        android:layout_weight="1"
+                        android:id="@+id/choix_7"/>
+                    <ImageView
                         android:layout_width="1px"
                         android:layout_height="match_parent"
-                        android:text="Choix 8"
-                        android:layout_weight="1"/>
+                        android:src="@drawable/ca_1_launching_spacecraft"
+                        android:scaleType="fitCenter"
+                        android:layout_weight="1"
+                        android:id="@+id/choix_8"/>
 
                 </LinearLayout>
 
@@ -220,12 +233,14 @@
 
             <TextView
                 android:layout_alignBottom="@+id/profilePicture"
-                android:layout_alignRight="@+id/profilePicture"
+                android:layout_toRightOf="@+id/profilePicture"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="55px"
                 android:id="@+id/profileName"
                 android:textColor="#FFF"
-                android:textSize="15sp"/>
+                android:textSize="15sp"
+                android:text="testestestest"/>
         </RelativeLayout>
 
 
