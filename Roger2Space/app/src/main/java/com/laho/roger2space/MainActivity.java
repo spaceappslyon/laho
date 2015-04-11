@@ -8,21 +8,47 @@ import android.content.pm.ResolveInfo;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AbsoluteLayout;
 import android.widget.Button;
+import android.widget.Toast;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 
 
 public class MainActivity extends FragmentActivity {
+    static String URL_LIST = "http://johnleger.free.fr/spaceApp/";
+    static String URL_GET_LIST = "liste";
 
+    View mScreen_1;
+    View mScreen_2;
+
+    Button mNavBarBut_1;
     Button mPlayButton;
+    Button mButDragNDrop;
+    Float mButDragNDrop_x;
+    Float mButDragNDrop_y;
+
+
     View mRootView;
+
+    MediaPlayer mMediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +84,60 @@ public class MainActivity extends FragmentActivity {
             }
         });
 
+
+
+
+
+
+
+        // screens
+        mScreen_1 = findViewById(R.id.screen_1);
+        mScreen_2 = findViewById(R.id.screen_2);
+
+
+        // first but play
+        findViewById(R.id.butPlay).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mScreen_1.setVisibility(View.INVISIBLE);
+                mScreen_2.setVisibility(View.VISIBLE);
+
+                mMediaPlayer = startRandomMusic();
+            }
+        });
+
+
+
+
+        // Nav bar interactions
+        mNavBarBut_1 = (Button)findViewById(R.id.nav_bar_but_1);
+        mNavBarBut_1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mScreen_1.setVisibility(View.VISIBLE);
+                mScreen_2.setVisibility(View.INVISIBLE);
+
+                mMediaPlayer.stop();
+            }
+        });
+
+
+        // button drag n drop
+        mButDragNDrop = (Button)findViewById(R.id.butDragNDrop);
+        mButDragNDrop.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent me) {
+                /*if (me.getAction() == MotionEvent.ACTION_DOWN){
+                    mButDragNDrop_x = me.getX();
+                    mButDragNDrop_y = me.getY();
+                    Log.i("DRAG N DROP", "Action Down " + mButDragNDrop_x + "," + mButDragNDrop_y);
+                }else if (me.getAction() == MotionEvent.ACTION_MOVE  ){
+                    AbsoluteLayout.LayoutParams params = new AbsoluteLayout.LayoutParams(v.getWidth(), v.getHeight(),(int)(me.getRawX() - (v.getWidth() / 2)), (int)(me.getRawY() - (v.getHeight())));
+                    v.setLayoutParams(params);
+                }*/
+                return true;
+            }
+        });
     }
 
     private void downloadSoundFromTheWeb(String url){
@@ -93,6 +173,102 @@ public class MainActivity extends FragmentActivity {
             return list.size() > 0;
         } catch (Exception e) {
             return false;
+        }
+    }
+
+
+
+
+
+
+
+
+
+    public MediaPlayer startRandomMusic() {
+        new HttpAsyncTask().execute(URL_LIST + URL_GET_LIST);
+
+        MediaPlayer mediaPlayer = new MediaPlayer();
+
+        return mediaPlayer;
+    }
+
+
+    public void startThisStream(MediaPlayer mediaPlayer, String url){
+        try {
+            mediaPlayer.setDataSource(url);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        mediaPlayer.setOnPreparedListener(prepareListener);
+        mediaPlayer.prepareAsync();
+    }
+
+    private MediaPlayer.OnPreparedListener prepareListener = new MediaPlayer.OnPreparedListener(){
+        public void onPrepared(MediaPlayer mp){
+             if(!mp.isPlaying())
+                mp.start();
+        }
+    };
+
+
+
+
+
+
+    public static String GET(String url){
+        InputStream inputStream = null;
+        String result = "";
+        try {
+
+            // create HttpClient
+            HttpClient httpclient = new DefaultHttpClient();
+
+            // make GET request to the given URL
+            HttpResponse httpResponse = httpclient.execute(new HttpGet(url));
+
+            // receive response as inputStream
+            inputStream = httpResponse.getEntity().getContent();
+
+            // convert inputstream to string
+            if(inputStream != null)
+                result = convertInputStreamToString(inputStream);
+            else
+                result = "Did not work!";
+
+        } catch (Exception e) {
+            Log.d("InputStream", e.getLocalizedMessage());
+        }
+
+        return result;
+    }
+
+    private static String convertInputStreamToString(InputStream inputStream) throws IOException{
+        BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
+        String line = "";
+        String result = "";
+        while((line = bufferedReader.readLine()) != null)
+            result += line;
+
+        inputStream.close();
+        return result;
+
+    }
+
+    private class HttpAsyncTask extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... urls) {
+
+            return GET(urls[0]);
+        }
+        // onPostExecute displays the results of the AsyncTask.
+        @Override
+        protected void onPostExecute(String result) {
+            Toast.makeText(getBaseContext(), "Received!", Toast.LENGTH_LONG).show();
+
+            String[] separated = result.split("\n");
+            for(String sMusic : separated)
+                Log.e("RESULTAT : ",sMusic);
         }
     }
 }

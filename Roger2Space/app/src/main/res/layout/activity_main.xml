@@ -3,33 +3,182 @@
     tools:context=".MainActivity"
     style="@style/main_layouts">
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical">
+    <include layout="@layout/header_nav_bar"
+        android:id="@+id/header_nav_bar"/>
 
-        <TextView android:text="Hi, I'm the main activity :)."
-                  style="@style/main_labels"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/header_nav_bar">
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/playbutton"
-            android:text="play"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="bouton 2"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="bouton 3"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="bouton 4"/>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:visibility="invisible">
 
-    </LinearLayout>
+            <TextView android:text="Hi, I'm the main activity :)."
+                style="@style/main_labels"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/playbutton"
+                android:text="play"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="bouton 2"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="bouton 3"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="bouton 4"/>
+
+        </LinearLayout>
+
+
+
+
+
+
+
+        <!-- FIRST SCREEN -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/screen_1"
+            android:visibility="visible">
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="50dp"
+                android:id="@+id/butPlay"
+                android:text="PLAY"/>
+        </RelativeLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <!-- SECOND SCREEN -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/screen_2"
+            android:visibility="invisible">
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <!-- LINE 1 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:padding="15dp">
+
+                    <Button
+                        android:layout_width="1px"
+                        android:layout_height="match_parent"
+                        android:text="Choix 1"
+                        android:layout_weight="1"/>
+                    <Button
+                        android:layout_width="1px"
+                        android:layout_height="match_parent"
+                        android:text="Choix 2"
+                        android:layout_weight="1"/>
+                    <Button
+                        android:layout_width="1px"
+                        android:layout_height="match_parent"
+                        android:text="Choix 3"
+                        android:layout_weight="1"/>
+
+                </LinearLayout>
+
+
+                <!-- LINE 2 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:padding="15dp">
+
+                    <Button
+                        android:layout_width="1px"
+                        android:layout_height="match_parent"
+                        android:text="Choix 4"
+                        android:layout_weight="1"/>
+                    <View
+                        android:layout_width="1px"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"/>
+                    <Button
+                        android:layout_width="1px"
+                        android:layout_height="match_parent"
+                        android:text="Choix 5"
+                        android:layout_weight="1"/>
+
+                </LinearLayout>
+
+                <!-- LINE 3 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:padding="15dp">
+
+                    <Button
+                        android:layout_width="1px"
+                        android:layout_height="match_parent"
+                        android:text="Choix 6"
+                        android:layout_weight="1"/>
+                    <Button
+                        android:layout_width="1px"
+                        android:layout_height="match_parent"
+                        android:text="Choix 7"
+                        android:layout_weight="1"/>
+                    <Button
+                        android:layout_width="1px"
+                        android:layout_height="match_parent"
+                        android:text="Choix 8"
+                        android:layout_weight="1"/>
+
+                </LinearLayout>
+
+
+             </LinearLayout>
+
+            <!-- Drag me I am the title -->
+            <Button
+                android:id="@+id/butDragNDrop"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:text="Drag me ; Je suis le titre de la musique"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"/>
+
+        </RelativeLayout>
+    </RelativeLayout>
+
 
 
 </RelativeLayout>
