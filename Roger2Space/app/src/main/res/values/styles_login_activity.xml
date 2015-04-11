@@ -1,0 +1,8 @@
+<resources>
+    <!-- ONLY LOGIN ACTIVITY STYLES -->
+
+    <style name="login_googlePlusBut" parent="main_buttons">
+           <item name="android:layout_centerHorizontal">true</item>
+            <item name="android:layout_centerVertical">true</item>
+    </style>
+</resources>
