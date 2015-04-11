@@ -1,11 +1,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity"
-    android:background="#FFFFFF">
+    style="@style/main_layouts">
 
-    <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="#000000"/>
+    <TextView android:text="Hi, I'm the main activity :)."
+        style="@style/main_labels"/>
 
 </RelativeLayout>

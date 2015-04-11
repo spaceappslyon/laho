@@ -1,8 +1,24 @@
 <resources>
-
+    <!-- ONLY MAIN STYLES -->
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar"></style>
+
+
+
+    <!-- Base layouts theme. -->
+    <style name="main_layouts" >
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">#FFFFFF</item>
+        <item name="android:textColor">#000000</item>
+    </style>
+
+
+    <!-- Base labels theme. -->
+    <style name="main_labels" >
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#000000</item>
     </style>
 
 </resources>
