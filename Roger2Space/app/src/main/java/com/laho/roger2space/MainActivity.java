@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
+import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -113,6 +114,15 @@ public class MainActivity extends FragmentActivity {
         butPlayAnim2 = findViewById(R.id.butPlayAnim2);
         Animation logoMoveAnimation = AnimationUtils.loadAnimation(this, R.anim.animation_scale);
         butPlayAnim1.startAnimation(logoMoveAnimation);
+
+        final Animation logoMoveAnimation2 = AnimationUtils.loadAnimation(this, R.anim.animation_scale);
+        final Handler handler = new Handler();
+        final Runnable r = new Runnable() {
+            public void run() {
+                butPlayAnim2.startAnimation(logoMoveAnimation2);
+            }
+        };
+        handler.postDelayed(r, 1200);
 
 
 

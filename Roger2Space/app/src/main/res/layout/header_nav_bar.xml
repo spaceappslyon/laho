@@ -22,12 +22,7 @@
             android:layout_weight="1"
             android:text="Two"/>
 
-        <Button
-            android:layout_width="1px"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="3"/>
-
 
     </LinearLayout>
+
 </RelativeLayout>
