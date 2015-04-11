@@ -277,7 +277,7 @@ public class MainActivity extends FragmentActivity {
 
             String[] separated = result.split("\n");
             Random randomGenerator = new Random();
-            int randomInt = randomGenerator.nextInt(separated.length-1);
+            int randomInt = randomGenerator.nextInt(separated.length);
             String sMusic = separated[randomInt];
             Log.e("Start Music : ", sMusic);
             startThisStream(sMusic);
