@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/header_nav_bar"
+        android:id="@+id/layout_content"
         android:background="#5F6AA0">
 
         <LinearLayout
@@ -198,8 +199,36 @@
                 android:layout_centerHorizontal="true"/>
 
         </RelativeLayout>
+
+
+
+
+
+        <!-- THIRD SCREEN -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/screen_3_profile"
+            android:visibility="invisible">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginTop="25dp"
+                android:id="@+id/profilePicture"/>
+
+            <TextView
+                android:layout_alignBottom="@+id/profilePicture"
+                android:layout_alignRight="@+id/profilePicture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/profileName"
+                android:textColor="#FFF"
+                android:textSize="15sp"/>
+        </RelativeLayout>
+
+
+
     </RelativeLayout>
-
-
-
 </RelativeLayout>

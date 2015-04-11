@@ -3,6 +3,12 @@
     tools:context=".MainActivity"
     style="@style/main_layouts">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/screenshot"
+        android:scaleType="centerCrop"/>
+
 
 
 

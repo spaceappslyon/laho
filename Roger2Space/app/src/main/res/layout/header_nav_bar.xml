@@ -9,18 +9,68 @@
         android:orientation="horizontal">
 
 
-        <Button
+        <RelativeLayout
             android:layout_width="1px"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Back"
-            android:id="@+id/nav_bar_but_1"/>
+            android:id="@+id/nav_bar_but_1">
 
-        <Button
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_radar"
+                android:scaleType="fitStart"
+                android:padding="8dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center|center"
+                android:text="Get Started"
+                android:textColor="#FFF"
+                android:textSize="18sp"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="8px"
+                android:layout_marginRight="35dp"
+                android:layout_marginLeft="35dp"
+                android:background="#FFF"
+                android:layout_alignParentBottom="true"
+                android:visibility="visible"
+                android:id="@+id/nav_bar_but_1_border"/>
+        </RelativeLayout>
+
+
+        <RelativeLayout
             android:layout_width="1px"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Two"/>
+            android:id="@+id/nav_bar_but_2">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_profil"
+                android:scaleType="fitStart"
+                android:padding="8dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center|center"
+                android:text="User profile"
+                android:textColor="#FFF"
+                android:textSize="18sp"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="8px"
+                android:layout_marginRight="35dp"
+                android:layout_marginLeft="35dp"
+                android:background="#FFF"
+                android:layout_alignParentBottom="true"
+                android:visibility="invisible"
+                android:id="@+id/nav_bar_but_2_border"/>
+        </RelativeLayout>
 
 
     </LinearLayout>

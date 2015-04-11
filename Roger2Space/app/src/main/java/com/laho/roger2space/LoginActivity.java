@@ -54,8 +54,14 @@ public class LoginActivity extends FragmentActivity implements
     {
         try{
             String name = plusClient.getCurrentPerson().getName().getGivenName();
+            String avatarUrl = "";
+            if (plusClient.getCurrentPerson().getImage().hasUrl())
+            {
+                avatarUrl = plusClient.getCurrentPerson().getImage().getUrl();
+            }
             Intent intent = new Intent(this, MainActivity.class);
             intent.putExtra("name", name);
+            intent.putExtra("pictureUrl", avatarUrl);
             startActivity(intent);
             this.finish();
         }catch (Exception e){
