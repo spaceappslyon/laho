@@ -5,7 +5,9 @@
 
 
 
-    <Button style="@style/login_googlePlusBut"
-        android:text="Login with Google"/>
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/google_sign_in_button"
+        style="@style/login_googlePlusBut"/>
 
 </RelativeLayout>
