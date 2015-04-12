@@ -199,7 +199,6 @@ public class MainActivity extends FragmentActivity {
                         int rawY = (int)me.getRawY();
 
                         if (me.getAction() == MotionEvent.ACTION_DOWN) {
-                            mButDragNDropBase= new int[] {mButDragNDrop.getLeft(),mButDragNDrop.getTop()};
                             mButDragNDrop_x = me.getX();
                             mButDragNDrop_y = me.getY();
                             Log.i("DRAG N DROP", "Action Down " + mButDragNDrop_x + "," + mButDragNDrop_y);
