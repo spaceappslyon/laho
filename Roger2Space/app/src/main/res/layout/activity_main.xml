@@ -74,6 +74,12 @@
         />
 
 
+
+      
+
+
+
+
         <!-- THIRD SCREEN -->
         <include  layout="@layout/third_screen"
                   android:id="@+id/screen_3_profile"

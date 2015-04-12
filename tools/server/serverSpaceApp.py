@@ -9,13 +9,13 @@ class MyTCPHandler(SocketServer.BaseRequestHandler):
     "Launch-Sound_Jupiter-Launch.mp3_best.mp3",
     "Launch-Sound_Shuttle-Landing.mp3_best.mp3",
     "Sound-Bite_Apollo-11_One-Small-Step_Quote.mp3",
-    "VanA-2014-08-28_0313.mp3",
+    "VanA-2014-08-28_0313.mp3"
     ]
     liste2 = [
     "STS-41-Launch-Onboard-Nat-Sound_part0.mp3",
     "STS-41-Launch-Onboard-Nat-Sound_part1.mp3",
     "STS-41-Launch-Onboard-Nat-Sound_part2.mp3",
-    "STS-41-Launch-Onboard-Nat-Sound_part3.mp3",
+    "STS-41-Launch-Onboard-Nat-Sound_part3.mp3"
     ]
 
     def most_common(self,lst):
@@ -30,12 +30,13 @@ class MyTCPHandler(SocketServer.BaseRequestHandler):
 		f.write(i+" -1")
 	    f.write("\n")
 	f.write("STS-41-Launch-Onboard-Nat-Sound.mp3 ")
-	for i in self.liste2:
+	for i,w in enumerate(self.liste2):
             try:
-                f.write(str(self.most_common(self.summary[i])))
+                f.write(str(self.most_common(self.summary[w])))
             except:
                 f.write("-1")
-            f.write(" ")
+            if i < len(self.liste2)-1:
+                f.write(" ")
 	f.close()
 
     def handle(self):

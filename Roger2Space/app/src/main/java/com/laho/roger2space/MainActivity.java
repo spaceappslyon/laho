@@ -8,6 +8,11 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.media.AudioManager;
 import android.media.Image;
 import android.media.MediaPlayer;
@@ -203,7 +208,17 @@ public class MainActivity extends FragmentActivity {
             mButDragNDrop = (Button) findViewById(R.id.butDragNDrop);
 
             mProgressMusicBar = (DashedCircularProgress) findViewById(R.id.progressMusicBar);
-
+            mProgressMusicBar.setOnValueChangeListener(new DashedCircularProgress.OnValueChangeListener() {
+                @Override
+                public void onValueChange(float value) {
+                    try {
+                        if (value >= mProgressMusicBar.getMax())
+                            startRandomMusic();
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            });
 
             mButDragNDrop.setOnTouchListener(new View.OnTouchListener() {
                 @Override
@@ -311,7 +326,7 @@ private void animateButtonToInitialPlace(){
             }
         }
 
-        mMediaPlayer = new MediaPlayer();
+
         new HttpAsyncTask().execute(URL_LIST + URL_GET_LIST);
     }
 
@@ -320,21 +335,24 @@ private void animateButtonToInitialPlace(){
         try {
             String musicToPlay = URL_LIST+music;
             Log.e("Start this music ",musicToPlay);
+            mMediaPlayer = new MediaPlayer();
             mMediaPlayer.setDataSource(musicToPlay);
+            mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            mMediaPlayer.setOnPreparedListener(prepareListener);
+            mMediaPlayer.prepareAsync();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        mMediaPlayer.setOnPreparedListener(prepareListener);
-        mMediaPlayer.prepareAsync();
+
     }
 
     private MediaPlayer.OnPreparedListener prepareListener = new MediaPlayer.OnPreparedListener(){
         public void onPrepared(MediaPlayer mp){
-             if(!mp.isPlaying()) {
-                 mp.start();
-                 mProgressMusicBar.reset();
-                 mProgressMusicBar.setValue(10000);
+            try {
+                if (!mp.isPlaying()) {
+                    mp.start();
+                    mProgressMusicBar.reset();
+                    mProgressMusicBar.setValue(10000);
 /*
                  final Runnable r = new Runnable() {
                      public void run() {
@@ -352,7 +370,10 @@ private void animateButtonToInitialPlace(){
                  };
 
                  handlerProgressBar.postDelayed(r, 0);*/
-             }
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
     };
 
@@ -439,7 +460,7 @@ private void animateButtonToInitialPlace(){
 
 
 
-    private class LoadProfileImage extends AsyncTask<String, Void, Bitmap> {
+    private class LoadProfileImage extends AsyncTask<String, Bitmap, Bitmap> {
         ImageView bmImage;
 
         public LoadProfileImage(ImageView bmImage) {
@@ -460,6 +481,28 @@ private void animateButtonToInitialPlace(){
 
         protected void onPostExecute(Bitmap result) {
             bmImage.setImageBitmap(result);
+            mProgressMusicBar.setIconBitmap( cutCircle(result) );
         }
+    }
+
+
+    public Bitmap cutCircle(Bitmap bitmapimg){
+        Bitmap output = Bitmap.createBitmap(bitmapimg.getWidth(),
+                bitmapimg.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+
+        final int color = 0xff424242;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, bitmapimg.getWidth(),
+                bitmapimg.getHeight());
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        canvas.drawCircle(bitmapimg.getWidth() / 2,
+                bitmapimg.getHeight() / 2, bitmapimg.getWidth() / 2, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmapimg, rect, rect, paint);
+        return output;
     }
 }
