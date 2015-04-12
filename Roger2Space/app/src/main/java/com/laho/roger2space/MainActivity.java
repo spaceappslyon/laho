@@ -22,6 +22,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewPropertyAnimator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -59,7 +60,7 @@ public class MainActivity extends FragmentActivity {
     View mNavBarBut_2;
     View mNavBarBut_2_border;
     Button mButDragNDrop;
-    int[] MbutDragNDropBase = {0,0};
+    int[] mButDragNDropBase = {0,0};
 
 
     Float mButDragNDrop_x;
@@ -183,22 +184,26 @@ public class MainActivity extends FragmentActivity {
             // button drag n drop
             mButDragNDrop = (Button) findViewById(R.id.butDragNDrop);
 
-
             mButDragNDrop.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(final View v, MotionEvent me) {
                     try {
+                        int rawX = (int)me.getRawX();
+                        int rawY = (int)me.getRawY();
+
                         if (me.getAction() == MotionEvent.ACTION_DOWN) {
+                            mButDragNDropBase= new int[] {mButDragNDrop.getLeft(),mButDragNDrop.getTop()};
                             mButDragNDrop_x = me.getX();
                             mButDragNDrop_y = me.getY();
                             Log.i("DRAG N DROP", "Action Down " + mButDragNDrop_x + "," + mButDragNDrop_y);
                         } else if (me.getAction() == MotionEvent.ACTION_MOVE) {
-                            v.setX(((int) (me.getRawX() - (v.getWidth() / 2))));
-                            v.setY(((int) (me.getRawY() - (v.getHeight()))));
+
+
+                            v.setX(((int) (rawX - (v.getWidth() / 2))));
+                            v.setY(((int) (rawY - (v.getHeight()))));
                         } else if (me.getAction() == MotionEvent.ACTION_UP) {
-                            selectButtonFromSwipe(me.getRawX(), me.getRawY());
-                          //  Animation anim = AnimationUtils.loadAnimation(that, R.anim.translate_anim);
-                           // v.startAnimation(anim);
+                            if(!selectButtonFromSwipe(me.getRawX(), me.getRawY()))
+                                animateButtonToInitialPlace();
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -229,26 +234,17 @@ public class MainActivity extends FragmentActivity {
         }
     }
 
-
+private void animateButtonToInitialPlace(){
+    ViewPropertyAnimator anim =   mButDragNDrop.animate()
+            .translationX(0)
+            .translationY(0)
+            .setDuration(200);
+}
    private void onSelectChoice(int num){
        Toast.makeText(getBaseContext(), "HEYY you did the "+(num)+" choice !", Toast.LENGTH_SHORT).show();
        final String music = mButDragNDrop.getText().toString();
 
-
-       // anim change music
-
-       Animation outAnim = new AlphaAnimation(1.0f,0.0f);
-       outAnim.setDuration(500);
-       outAnim.setRepeatMode(Animation.REVERSE);
-       outAnim.setRepeatCount(1);
-
-
-
-       mButDragNDrop.setX(mScreen_1.getHeight()/2);
-       mButDragNDrop.setY(mScreen_1.getWidth()/4);
-       mButDragNDrop.startAnimation(outAnim);
-
-
+        animateButtonToInitialPlace();
        // random new music
        startRandomMusic();
 
@@ -257,8 +253,6 @@ public class MainActivity extends FragmentActivity {
        SendStats a = new SendStats("195.154.15.21", 3000);
        a.sendAsync(music, num);// title, choice
    }
-
-
 
 
     private boolean selectButtonFromSwipe(float rawX, float rawY) {
