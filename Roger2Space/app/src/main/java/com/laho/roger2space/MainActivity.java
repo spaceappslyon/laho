@@ -29,9 +29,12 @@ import android.view.animation.TranslateAnimation;
 import android.widget.AbsoluteLayout;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.github.glomadrian.dashedcircularprogress.DashedCircularProgress;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -59,6 +62,7 @@ public class MainActivity extends FragmentActivity {
     View mNavBarBut_2;
     View mNavBarBut_2_border;
     Button mButDragNDrop;
+    DashedCircularProgress mProgressMusicBar;
     int[] MbutDragNDropBase = {0,0};
 
 
@@ -78,7 +82,7 @@ public class MainActivity extends FragmentActivity {
     ImageView mImgProfilePicture;
     String profile_name;
 
-
+    Handler handlerProgressBar;
     ImageView[] mButChoix;
 
     @Override
@@ -105,7 +109,7 @@ public class MainActivity extends FragmentActivity {
 
 
 
-
+            handlerProgressBar = new Handler();
 
             // screens
             mScreen_1 = findViewById(R.id.screen_1);
@@ -182,7 +186,7 @@ public class MainActivity extends FragmentActivity {
 
             // button drag n drop
             mButDragNDrop = (Button) findViewById(R.id.butDragNDrop);
-
+            mProgressMusicBar = (DashedCircularProgress) findViewById(R.id.progressMusicBar);
 
             mButDragNDrop.setOnTouchListener(new View.OnTouchListener() {
                 @Override
@@ -285,6 +289,12 @@ public class MainActivity extends FragmentActivity {
 
 
     public void startRandomMusic() {
+        mProgressMusicBar.reset();
+
+        if(handlerProgressBar != null){
+            handlerProgressBar.removeCallbacksAndMessages(null);
+        }
+
         if(mMediaPlayer != null){
             if(mMediaPlayer.isPlaying()){
                 mMediaPlayer.stop();
@@ -311,8 +321,28 @@ public class MainActivity extends FragmentActivity {
 
     private MediaPlayer.OnPreparedListener prepareListener = new MediaPlayer.OnPreparedListener(){
         public void onPrepared(MediaPlayer mp){
-             if(!mp.isPlaying())
-                mp.start();
+             if(!mp.isPlaying()) {
+                 mp.start();
+                 mProgressMusicBar.reset();
+                 mProgressMusicBar.setValue(10000);
+/*
+                 final Runnable r = new Runnable() {
+                     public void run() {
+                         int progress = mProgressMusicBar.getV
+                         progress ++;
+                         mProgressMusicBar.setValue(progress);
+                         if(mScreen_2.getVisibility() == View.VISIBLE) {
+                             if (progress < mProgressMusicBar.getMax()) {
+                                 handlerProgressBar.postDelayed(this, 1);
+                             } else {
+                                 startRandomMusic();
+                             }
+                         }
+                     }
+                 };
+
+                 handlerProgressBar.postDelayed(r, 0);*/
+             }
         }
     };
 
