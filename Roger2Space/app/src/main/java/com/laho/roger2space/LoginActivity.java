@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ProgressBar;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
@@ -37,12 +39,20 @@ public class LoginActivity extends FragmentActivity implements
             @Override
             public void onClick(View v) {
                 try {
+                    //load(true);
                     plusClient.connect();
                 }catch (Exception e){
                     e.printStackTrace();
                 }
             }
         });
+    }
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        plusClient.disconnect();
     }
 
 
@@ -72,6 +82,7 @@ public class LoginActivity extends FragmentActivity implements
 
     @Override
     public void onDisconnected() {
+        //load(false);
         Log.d("DISCONNECTED", "disconnected");
     }
 
@@ -82,12 +93,19 @@ public class LoginActivity extends FragmentActivity implements
             plusClient.connect();
         }
     }
-
-    @Override
-    public void onClick(View v) {
-
+/*
+    public void load(Boolean isLoading){
+        Button log = (Button)findViewById(R.id.google_sign_in_button);
+        ProgressBar progressBar = (ProgressBar)findViewById(R.id.progressBar);
+        if(isLoading){
+            log.setEnabled(false);
+            progressBar.setVisibility(View.VISIBLE);
+        }else{
+            log.setEnabled(true);
+            progressBar.setVisibility(View.INVISIBLE);
+        }
     }
-
+*/
     @Override
     public void onConnectionFailed(ConnectionResult result) {
         if (result.hasResolution()) {
@@ -97,5 +115,11 @@ public class LoginActivity extends FragmentActivity implements
                 plusClient.connect();
             }
         }
+        //load(false);
+    }
+
+    @Override
+    public void onClick(View v) {
+
     }
 }
