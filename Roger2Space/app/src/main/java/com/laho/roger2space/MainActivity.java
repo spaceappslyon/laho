@@ -9,6 +9,7 @@ import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.AudioManager;
+import android.media.Image;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -56,7 +57,6 @@ public class MainActivity extends FragmentActivity {
     View mNavBarBut_1_border;
     View mNavBarBut_2;
     View mNavBarBut_2_border;
-    Button mPlayButton;
     Button mButDragNDrop;
     Float mButDragNDrop_x;
     Float mButDragNDrop_y;
@@ -101,31 +101,6 @@ public class MainActivity extends FragmentActivity {
 
 
 
-            mPlayButton = (Button) mRootView.findViewById(R.id.playbutton);
-
-            mPlayButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (isDownloadManagerAvailable(getApplicationContext()))
-                        downloadSoundFromTheWeb("https://sites.google.com/site/sakethrajan/Internationale-Hindi.mp3?attredirects=0");
-                    MediaPlayer mPlayer = new MediaPlayer();
-
-                    Uri myUri = Uri.parse(Environment.DIRECTORY_DOWNLOADS + "music.mp3");
-                    mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                    try {
-                        mPlayer.setDataSource(getApplicationContext(), myUri);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    try {
-                        mPlayer.prepare();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    mPlayer.start();
-
-                }
-            });
 
 
             // screens
@@ -215,18 +190,18 @@ public class MainActivity extends FragmentActivity {
                             v.setX(((int) (me.getRawX() - (v.getWidth() / 2))));
                             v.setY(((int) (me.getRawY() - (v.getHeight()))));
                         } else if (me.getAction() == MotionEvent.ACTION_UP) {
-                            Animation anim = AnimationUtils.loadAnimation(that, R.anim.translate_anim);
-                            v.startAnimation(anim);
+                            selectButtonFromSwipe(me.getRawX(), me.getRawY());
+                          //  Animation anim = AnimationUtils.loadAnimation(that, R.anim.translate_anim);
+                           // v.startAnimation(anim);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                     return true;
                 }
+
+
             });
-
-
-
 
 
             // Get choice buttons
@@ -248,21 +223,6 @@ public class MainActivity extends FragmentActivity {
         }
     }
 
-    private void downloadSoundFromTheWeb(String url){
-        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
-        request.setDescription("Some descrition");
-        request.setTitle("music.mp3");
-// in order for this if to run, you must use the android 3.2 to compile your app
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            request.allowScanningByMediaScanner();
-            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        }
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "name-of-the-file.ext");
-
-// get download service and enqueue file
-        DownloadManager manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
-        manager.enqueue(request);
-    }
 
     /**
      * @param context used to check the device version and DownloadManager information
@@ -287,7 +247,26 @@ public class MainActivity extends FragmentActivity {
 
 
 
+    private void selectButtonFromSwipe(float rawX, float rawY) {
+        int choixImage = 0;
+        for(ImageView choix : mButChoix){
+            View parent = (View)choix.getParent();
+            int x,xPlusWidth,y,yPlusWidth;
+            x = (int) choix.getX();
+            xPlusWidth = x+choix.getWidth();
+            y = (int) choix.getY()+(int)parent.getY();
+            yPlusWidth = y + choix.getHeight();
 
+            if(rawX > x && rawX < xPlusWidth && rawY > y && rawY < yPlusWidth){
+                Toast.makeText(getBaseContext(), "HEYY you did the "+(choixImage)+" choice !", Toast.LENGTH_SHORT).show();
+               // startRandomMusic();
+                return;
+            }
+            choixImage++;
+        }
+
+
+    }
 
 
 
