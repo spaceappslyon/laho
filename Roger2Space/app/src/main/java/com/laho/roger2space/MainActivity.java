@@ -143,7 +143,7 @@ public class MainActivity extends FragmentActivity {
             mScreen_3_profile = findViewById(R.id.screen_3_profile);
 
             mNumberOfClicksView = (TextView) findViewById(R.id.numberOfClicks);
-
+            mNumberOfClicksView.setText("Number of analyzed sounds : "+mNumberOfClicks);
             // first but play
             findViewById(R.id.butPlay).setOnClickListener(new View.OnClickListener() {
                 @Override
