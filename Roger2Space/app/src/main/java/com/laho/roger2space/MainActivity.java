@@ -65,7 +65,6 @@ public class MainActivity extends FragmentActivity {
     Button mButDragNDrop;
     
     DashedCircularProgress mProgressMusicBar;
-    int[] MbutDragNDropBase = {0,0};
 
 
     Float mButDragNDrop_x;
@@ -187,6 +186,7 @@ public class MainActivity extends FragmentActivity {
 
 
             // button drag n drop
+            mButDragNDrop = (Button) findViewById(R.id.butDragNDrop);
 
             mProgressMusicBar = (DashedCircularProgress) findViewById(R.id.progressMusicBar);
 
