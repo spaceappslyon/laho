@@ -102,8 +102,8 @@ public class MainActivity extends FragmentActivity {
     String[] mbuttonChoixtitle = {"","Launching Spacecraft",
                                 "Space sounds",
                                 "Piece of History",
-                                "Share file",
                                 "Sound Saved",
+                                "Share file",
                                 "Space alien",
                                 "Unidentified sound",
                                 "Radio Transmission"};
@@ -187,7 +187,7 @@ public class MainActivity extends FragmentActivity {
                         if(mProgressMusicBar != null)
                             mProgressMusicBar.reset();
 
-                        if(mMediaPlayer != null && mMediaPlayer.isPlaying())
+                        if(mMediaPlayer != null)
                             mMediaPlayer.stop();
                     }catch (Exception e){
                         e.printStackTrace();
@@ -296,6 +296,8 @@ private void animateButtonToInitialPlace(){
 
         animateButtonToInitialPlace();
        if(num != 4 && num != 5) {
+           mProgressMusicBar.reset();
+           mProgressMusicBar.setValue(0);
            // random new music
            startRandomMusic();
        }

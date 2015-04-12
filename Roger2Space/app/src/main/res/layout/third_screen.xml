@@ -21,6 +21,7 @@
         android:layout_marginLeft="55px"
         android:layout_toRightOf="@+id/profilePicture"
         android:orientation="vertical"
+        android:id="@+id/bjr"
         >
         <TextView
             android:layout_width="wrap_content"
@@ -29,13 +30,54 @@
             android:textColor="#FFF"
             android:textSize="15sp"
             android:text="testestestest"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/numberOfClicks"
-            android:text="Nombre de musiques triés : "/>
 
         </LinearLayout>
+
+    <TextView
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:gravity="left|center"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:id="@+id/numberOfClicks"
+        android:text="Nombre de musiques triés : "
+        android:layout_below="@+id/bjr"
+        android:textSize="16sp"
+        android:textColor="#fff"
+        android:background="#ea5b79"
+        android:padding="10dp"
+        />
+
+    <TextView
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:layout_height="55dp"
+        android:id="@+id/lb1"
+        android:text="53\t\t\t\t\t         \t\t\t\t0.00003%"
+        android:layout_below="@+id/numberOfClicks"
+        android:textSize="19sp"
+        android:textColor="#ea5b79"
+        android:padding="10dp"
+        android:textStyle="bold"/>
+
+
+    <TextView
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_height="55dp"
+        android:id="@+id/lb2"
+        android:text="Sounds save\t\t\t\t\tContribution"
+        android:layout_below="@+id/lb1"
+        android:textSize="19sp"
+        android:textColor="#fff"
+        android:padding="10dp"
+        android:textStyle="bold"/>
+
+
 
 
 </RelativeLayout>
