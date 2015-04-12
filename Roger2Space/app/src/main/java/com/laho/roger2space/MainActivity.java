@@ -22,6 +22,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
@@ -213,7 +214,25 @@ public class MainActivity extends FragmentActivity {
                     @Override
                     public void onClick(View v) {
                         Toast.makeText(getBaseContext(), "HEYY you did the "+(num)+" choice !", Toast.LENGTH_LONG).show();
+                        final String music = mButDragNDrop.getText().toString();
+
+
+                        // anim change music
+                        Animation outAnim = new AlphaAnimation(1.0f,0.0f);
+                        outAnim.setDuration(500);
+                        outAnim.setRepeatMode(Animation.REVERSE);
+                        outAnim.setRepeatCount(1);
+                        mButDragNDrop.startAnimation(outAnim);
+
+
+                        // random new music
                         startRandomMusic();
+
+
+                        //send music to stats!
+                        SendStats a = new SendStats("195.154.15.21", 3000);
+                        a.sendAsync(music, num);// title, choice
+
                     }
                 });
             }
@@ -272,11 +291,14 @@ public class MainActivity extends FragmentActivity {
 
 
     public void startRandomMusic() {
+        if(mMediaPlayer != null){
+            if(mMediaPlayer.isPlaying()){
+                mMediaPlayer.stop();
+            }
+        }
+
         mMediaPlayer = new MediaPlayer();
         new HttpAsyncTask().execute(URL_LIST + URL_GET_LIST);
-
-
-
     }
 
 
