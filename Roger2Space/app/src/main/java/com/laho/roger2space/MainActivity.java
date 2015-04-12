@@ -295,8 +295,10 @@ private void animateButtonToInitialPlace(){
        final String music = mButDragNDrop.getText().toString();
 
         animateButtonToInitialPlace();
-       // random new music
-       startRandomMusic();
+       if(num != 4 && num != 5) {
+           // random new music
+           startRandomMusic();
+       }
 
         mNumberOfClicks++;
        //send music to stats!
@@ -307,7 +309,7 @@ private void animateButtonToInitialPlace(){
 
 
        // download
-       if(num == 4){
+       if(num == 5){
            downloadThisSound(music);
            //Intent sendIntent = new Intent(Intent.ACTION_SEND);
            //sendIntent.setClassName("com.android.mms", "com.android.mms.ui.ComposeMessageActivity");
