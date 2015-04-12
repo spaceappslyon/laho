@@ -82,6 +82,7 @@
 
 
 
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -131,15 +132,18 @@
                         android:layout_height="match_parent"
                         android:scaleType="fitCenter"
                         android:layout_weight="1"
+                        android:src="@drawable/ic_favorite_icon"
                         android:id="@+id/choix_4"/>
                     <View
                         android:layout_width="1px"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"/>
                     <ImageView
                         android:layout_width="1px"
                         android:layout_height="match_parent"
                         android:scaleType="fitCenter"
+                        android:src="@drawable/ca_8_shared"
+
                         android:layout_weight="1"
                         android:id="@+id/choix_5"/>
 

@@ -102,8 +102,8 @@ public class MainActivity extends FragmentActivity {
     String[] mbuttonChoixtitle = {"","Launching Spacecraft",
                                 "Space sounds",
                                 "Piece of History",
-                                "Space Alien",
-                                "blublu4",
+                                "Share file",
+                                "Sound Saved",
                                 "Space alien",
                                 "Unidentified sound",
                                 "Radio Transmission"};
