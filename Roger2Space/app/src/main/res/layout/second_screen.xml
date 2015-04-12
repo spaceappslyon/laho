@@ -3,6 +3,7 @@
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/screen_2"
     android:visibility="invisible"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:custom="http://schemas.android.com/apk/res-auto">
@@ -123,13 +124,13 @@
 -->
     <com.github.glomadrian.dashedcircularprogress.DashedCircularProgress
         android:id="@+id/progressMusicBar"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="200dp"
+        android:layout_height="220dp"
         custom:external_color="#1affffff"
         custom:base_color="#6effffff"
         custom:min="0"
         custom:max="10000"
-        custom:progress_color="#000000"
+        custom:progress_color="#e95579"
         custom:progress_icon="@drawable/ic_profil"
         custom:duration="10000"
         android:layout_centerVertical="true"
