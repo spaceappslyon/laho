@@ -28,6 +28,11 @@
             android:layout_height="match_parent"
             android:id="@+id/screen_1"
             android:visibility="visible">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/fond_ecran_wallpaper_serie"
+                android:scaleType="centerCrop"/>
 
             <ImageButton
                 android:layout_width="200dp"

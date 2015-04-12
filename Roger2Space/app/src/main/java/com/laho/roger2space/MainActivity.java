@@ -3,6 +3,7 @@ package com.laho.roger2space;
 import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -24,6 +25,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -51,9 +53,12 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -273,37 +278,7 @@ public class MainActivity extends FragmentActivity {
 
 
 
-            // receiver for download
 
-            BroadcastReceiver receiver = new BroadcastReceiver() {
-                @Override
-                public void onReceive(Context context, Intent intent) {
-                    String action = intent.getAction();
-                    if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(action)) {
-                        long downloadId = intent.getLongExtra(
-                                DownloadManager.EXTRA_DOWNLOAD_ID, 0);
-                        DownloadManager.Query query = new DownloadManager.Query();
-                        query.setFilterById(mEnqueue);
-                        Cursor c = mDm.query(query);
-                        if (c.moveToFirst()) {
-                            int columnIndex = c
-                                    .getColumnIndex(DownloadManager.COLUMN_STATUS);
-                            if (DownloadManager.STATUS_SUCCESSFUL == c
-                                    .getInt(columnIndex)) {
-
-                                String uriString = c
-                                        .getString(c
-                                                .getColumnIndex(DownloadManager.COLUMN_LOCAL_URI));
-                                Log.e("DOWNLOAD down",uriString);
-
-                            }
-                        }
-                    }
-                }
-            };
-
-            registerReceiver(receiver, new IntentFilter(
-                    DownloadManager.ACTION_DOWNLOAD_COMPLETE));
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -334,16 +309,61 @@ private void animateButtonToInitialPlace(){
        // download
        if(num == 4){
            downloadThisSound(music);
-           /*Intent sendIntent = new Intent(Intent.ACTION_SEND);
-           sendIntent.setClassName("com.android.mms", "com.android.mms.ui.ComposeMessageActivity");
-           sendIntent.putExtra("sms_body", "Hey, listen this music");
-           sendIntent.putExtra("address", send_to);
-           sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file:///sdcard/Test.vcf"));
-           sendIntent.setType("text/x-vcard");
-           startActivity(sendIntent);*/
+           //Intent sendIntent = new Intent(Intent.ACTION_SEND);
+           //sendIntent.setClassName("com.android.mms", "com.android.mms.ui.ComposeMessageActivity");
+           //sendIntent.putExtra("sms_body", "Hey, listen this music");
+           //sendIntent.putExtra("address", "");
+           //sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file:///sdcard/Test.vcf"));
+           /*sendIntent.setType("text/x-vcard");*/
+           //startActivity(sendIntent);
+
        }
    }
 
+
+    public String getRealPathFromURI(Context context, Uri contentUri) {
+        Cursor cursor = null;
+        try {
+            String[] proj = { MediaStore.Images.Media.DATA };
+            cursor = context.getContentResolver().query(contentUri,  proj, null, null, null);
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+    }
+
+
+    public void sendSMS(){
+        try {
+
+
+            String urlFile = "";
+            File downloadDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+            for(File f : downloadDirectory.listFiles()){
+                String name = f.getName();
+                if(name.equals("reger2spaceSound.mp3") ){
+                    urlFile = f.getAbsolutePath();
+                    break;
+                }
+            }
+
+
+            Log.e("SHARE",urlFile);
+
+
+            Intent shareIntent = new Intent();
+            shareIntent.setAction(Intent.ACTION_SEND);
+            shareIntent.putExtra(Intent.EXTRA_STREAM,Uri.parse(urlFile) );
+            shareIntent.setType("*/*");
+            startActivity(Intent.createChooser(shareIntent, "Share nasa sound..."));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 
     private boolean selectButtonFromSwipe(float rawX, float rawY) {
         int choixImage = 0;
@@ -408,23 +428,7 @@ private void animateButtonToInitialPlace(){
                     mp.start();
                     mProgressMusicBar.reset();
                     mProgressMusicBar.setValue(10000);
-/*
-                 final Runnable r = new Runnable() {
-                     public void run() {
-                         int progress = mProgressMusicBar.getV
-                         progress ++;
-                         mProgressMusicBar.setValue(progress);
-                         if(mScreen_2.getVisibility() == View.VISIBLE) {
-                             if (progress < mProgressMusicBar.getMax()) {
-                                 handlerProgressBar.postDelayed(this, 1);
-                             } else {
-                                 startRandomMusic();
-                             }
-                         }
-                     }
-                 };
 
-                 handlerProgressBar.postDelayed(r, 0);*/
                 }
             }catch (Exception e){
                 e.printStackTrace();
@@ -572,8 +576,29 @@ private void animateButtonToInitialPlace(){
             mDm= (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
             DownloadManager.Request request = new DownloadManager.Request(
                     Uri.parse(url));
+            request.setDescription("Roger2Space");
+            request.setTitle("download sound");
             mEnqueue = mDm.enqueue(request);
 
+            // in order for this if to run, you must use the android 3.2 to compile your app
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                request.allowScanningByMediaScanner();
+                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+            }
+            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "reger2spaceSound.mp3");
+
+            // get download service and enqueue file
+            DownloadManager manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+            manager.enqueue(request);
+
+            // check the download finished
+            BroadcastReceiver onComplete=new BroadcastReceiver() {
+                public void onReceive(Context ctxt, Intent intent) {
+                    sendSMS();
+                }
+            };
+            getApplicationContext()
+                    .registerReceiver(onComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
 
         }catch (Exception e){
             e.printStackTrace();
