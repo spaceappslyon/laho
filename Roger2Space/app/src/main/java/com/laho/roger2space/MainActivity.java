@@ -94,15 +94,14 @@ public class MainActivity extends FragmentActivity {
 
     Handler handlerProgressBar;
     ImageView[] mButChoix;
-    String[] mbuttonChoixtitle = {"Launching Spacecraft",
+    String[] mbuttonChoixtitle = {"","Launching Spacecraft",
                                 "Space sounds",
                                 "Piece of History",
                                 "Space Alien",
                                 "blublu4",
-                                "blublu5",
-                                "blublu6",
-                                "blublu7",
-                                "blublu8"};
+                                "Space alien",
+                                "Unidentified sound",
+                                "Radio Transmission"};
 
     DownloadManager mDm ;
     long mEnqueue;
@@ -139,8 +138,6 @@ public class MainActivity extends FragmentActivity {
             mScreen_3_profile = findViewById(R.id.screen_3_profile);
 
             mNumberOfClicksView = (TextView) findViewById(R.id.numberOfClicks);
-
-
 
             // first but play
             findViewById(R.id.butPlay).setOnClickListener(new View.OnClickListener() {
@@ -180,6 +177,7 @@ public class MainActivity extends FragmentActivity {
                         mNavBarBut_1_border.setVisibility(View.VISIBLE);
                         mScreen_2.setVisibility(View.INVISIBLE);
                         mScreen_3_profile.setVisibility(View.INVISIBLE);
+                        mNumberOfClicksView.setText("Number of analyzed sounds : "+mNumberOfClicks);
                         mNavBarBut_2_border.setVisibility(View.INVISIBLE);
                         if(mProgressMusicBar != null)
                             mProgressMusicBar.reset();
@@ -358,7 +356,7 @@ private void animateButtonToInitialPlace(){
             yPlusWidth = y + choix.getHeight();
 
             if(rawX > x && rawX < xPlusWidth && rawY > y && rawY < yPlusWidth){
-              onSelectChoice(choixImage);
+              onSelectChoice(choixImage+1);
                 return true;
             }
             choixImage++;
