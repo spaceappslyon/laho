@@ -13,34 +13,7 @@
         android:id="@+id/layout_content"
         android:background="#5F6AA0">
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:orientation="vertical"
-            android:visibility="invisible">
 
-            <TextView android:text="Hi, I'm the main activity :)."
-                style="@style/main_labels"/>
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/playbutton"
-                android:text="play"/>
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="bouton 2"/>
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="bouton 3"/>
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="bouton 4"/>
-
-        </LinearLayout>
 
 
 

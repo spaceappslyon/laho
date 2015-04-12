@@ -9,6 +9,7 @@ import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.AudioManager;
+import android.media.Image;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -57,8 +58,10 @@ public class MainActivity extends FragmentActivity {
     View mNavBarBut_1_border;
     View mNavBarBut_2;
     View mNavBarBut_2_border;
-    Button mPlayButton;
     Button mButDragNDrop;
+    int[] MbutDragNDropBase = {0,0};
+
+
     Float mButDragNDrop_x;
     Float mButDragNDrop_y;
 
@@ -102,31 +105,6 @@ public class MainActivity extends FragmentActivity {
 
 
 
-            mPlayButton = (Button) mRootView.findViewById(R.id.playbutton);
-
-            mPlayButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (isDownloadManagerAvailable(getApplicationContext()))
-                        downloadSoundFromTheWeb("https://sites.google.com/site/sakethrajan/Internationale-Hindi.mp3?attredirects=0");
-                    MediaPlayer mPlayer = new MediaPlayer();
-
-                    Uri myUri = Uri.parse(Environment.DIRECTORY_DOWNLOADS + "music.mp3");
-                    mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                    try {
-                        mPlayer.setDataSource(getApplicationContext(), myUri);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    try {
-                        mPlayer.prepare();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    mPlayer.start();
-
-                }
-            });
 
 
             // screens
@@ -204,6 +182,8 @@ public class MainActivity extends FragmentActivity {
 
             // button drag n drop
             mButDragNDrop = (Button) findViewById(R.id.butDragNDrop);
+
+
             mButDragNDrop.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(final View v, MotionEvent me) {
@@ -216,18 +196,18 @@ public class MainActivity extends FragmentActivity {
                             v.setX(((int) (me.getRawX() - (v.getWidth() / 2))));
                             v.setY(((int) (me.getRawY() - (v.getHeight()))));
                         } else if (me.getAction() == MotionEvent.ACTION_UP) {
-                            Animation anim = AnimationUtils.loadAnimation(that, R.anim.translate_anim);
-                            v.startAnimation(anim);
+                            selectButtonFromSwipe(me.getRawX(), me.getRawY());
+                          //  Animation anim = AnimationUtils.loadAnimation(that, R.anim.translate_anim);
+                           // v.startAnimation(anim);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                     return true;
                 }
+
+
             });
-
-
-
 
 
             // Get choice buttons
@@ -238,26 +218,8 @@ public class MainActivity extends FragmentActivity {
                 mButChoix[i].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(getBaseContext(), "HEYY you did the "+(num)+" choice !", Toast.LENGTH_LONG).show();
-                        final String music = mButDragNDrop.getText().toString();
 
-
-                        // anim change music
-                        Animation outAnim = new AlphaAnimation(1.0f,0.0f);
-                        outAnim.setDuration(500);
-                        outAnim.setRepeatMode(Animation.REVERSE);
-                        outAnim.setRepeatCount(1);
-                        mButDragNDrop.startAnimation(outAnim);
-
-
-                        // random new music
-                        startRandomMusic();
-
-
-                        //send music to stats!
-                        SendStats a = new SendStats("195.154.15.21", 3000);
-                        a.sendAsync(music, num);// title, choice
-
+                        onSelectChoice(num);
                     }
                 });
             }
@@ -267,46 +229,57 @@ public class MainActivity extends FragmentActivity {
         }
     }
 
-    private void downloadSoundFromTheWeb(String url){
-        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
-        request.setDescription("Some descrition");
-        request.setTitle("music.mp3");
-// in order for this if to run, you must use the android 3.2 to compile your app
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            request.allowScanningByMediaScanner();
-            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        }
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "name-of-the-file.ext");
 
-// get download service and enqueue file
-        DownloadManager manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
-        manager.enqueue(request);
-    }
+   private void onSelectChoice(int num){
+       Toast.makeText(getBaseContext(), "HEYY you did the "+(num)+" choice !", Toast.LENGTH_SHORT).show();
+       final String music = mButDragNDrop.getText().toString();
 
-    /**
-     * @param context used to check the device version and DownloadManager information
-     * @return true if the download manager is available
-     */
-    public static boolean isDownloadManagerAvailable(Context context) {
-        try {
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.GINGERBREAD) {
-                return false;
+
+       // anim change music
+
+       Animation outAnim = new AlphaAnimation(1.0f,0.0f);
+       outAnim.setDuration(500);
+       outAnim.setRepeatMode(Animation.REVERSE);
+       outAnim.setRepeatCount(1);
+
+
+
+       mButDragNDrop.setX(mScreen_1.getHeight()/2);
+       mButDragNDrop.setY(mScreen_1.getWidth()/4);
+       mButDragNDrop.startAnimation(outAnim);
+
+
+       // random new music
+       startRandomMusic();
+
+
+       //send music to stats!
+       SendStats a = new SendStats("195.154.15.21", 3000);
+       a.sendAsync(music, num);// title, choice
+   }
+
+
+
+
+    private boolean selectButtonFromSwipe(float rawX, float rawY) {
+        int choixImage = 0;
+        for(ImageView choix : mButChoix){
+            View parent = (View)choix.getParent();
+            int x,xPlusWidth,y,yPlusWidth;
+            x = (int) choix.getX();
+            xPlusWidth = x+choix.getWidth();
+            y = (int) choix.getY()+(int)parent.getY();
+            yPlusWidth = y + choix.getHeight();
+
+            if(rawX > x && rawX < xPlusWidth && rawY > y && rawY < yPlusWidth){
+              onSelectChoice(choixImage);
+                return true;
             }
-            Intent intent = new Intent(Intent.ACTION_MAIN);
-            intent.addCategory(Intent.CATEGORY_LAUNCHER);
-            intent.setClassName("com.android.providers.downloads.ui", "com.android.providers.downloads.ui.DownloadList");
-            List<ResolveInfo> list = context.getPackageManager().queryIntentActivities(intent,
-                    PackageManager.MATCH_DEFAULT_ONLY);
-            return list.size() > 0;
-        } catch (Exception e) {
-            return false;
+            choixImage++;
         }
+
+    return false;
     }
-
-
-
-
-
 
 
 
