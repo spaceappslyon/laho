@@ -76,7 +76,8 @@ public class MainActivity extends FragmentActivity {
     View mNavBarBut_2;
     View mNavBarBut_2_border;
     Button mButDragNDrop;
-    
+    TextView mNumberOfClicksView;
+    int mNumberOfClicks = 154;
     DashedCircularProgress mProgressMusicBar;
 
 
@@ -98,6 +99,14 @@ public class MainActivity extends FragmentActivity {
 
     Handler handlerProgressBar;
     ImageView[] mButChoix;
+    String[] mbuttonChoixtitle = {"","Launching Spacecraft",
+                                "Space sounds",
+                                "Piece of History",
+                                "Space Alien",
+                                "blublu4",
+                                "Space alien",
+                                "Unidentified sound",
+                                "Radio Transmission"};
 
     DownloadManager mDm ;
     long mEnqueue;
@@ -133,6 +142,7 @@ public class MainActivity extends FragmentActivity {
             mScreen_2 = findViewById(R.id.screen_2);
             mScreen_3_profile = findViewById(R.id.screen_3_profile);
 
+            mNumberOfClicksView = (TextView) findViewById(R.id.numberOfClicks);
 
             // first but play
             findViewById(R.id.butPlay).setOnClickListener(new View.OnClickListener() {
@@ -168,6 +178,7 @@ public class MainActivity extends FragmentActivity {
                 @Override
                 public void onClick(View v) {
                     try {
+                        mNumberOfClicksView.setText("Number of analyzed sounds : "+mNumberOfClicks);
                         mScreen_1.setVisibility(View.VISIBLE);
                         mNavBarBut_1_border.setVisibility(View.VISIBLE);
                         mScreen_2.setVisibility(View.INVISIBLE);
@@ -280,13 +291,15 @@ private void animateButtonToInitialPlace(){
             .setDuration(200);
 }
    private void onSelectChoice(int num){
-       Toast.makeText(getBaseContext(), "HEYY you did the "+(num)+" choice !", Toast.LENGTH_SHORT).show();
+       Toast.makeText(getBaseContext(), "HEYY you chose "+mbuttonChoixtitle[num] + "!", Toast.LENGTH_SHORT).show();
        final String music = mButDragNDrop.getText().toString();
 
         animateButtonToInitialPlace();
        // random new music
        startRandomMusic();
 
+        mNumberOfClicks++;
+       //send music to stats!
 
        // send music to stats!
        SendStats a = new SendStats("195.154.15.21", 3000);
@@ -363,7 +376,7 @@ private void animateButtonToInitialPlace(){
             yPlusWidth = y + choix.getHeight();
 
             if(rawX > x && rawX < xPlusWidth && rawY > y && rawY < yPlusWidth){
-              onSelectChoice(choixImage);
+              onSelectChoice(choixImage+1);
                 return true;
             }
             choixImage++;
