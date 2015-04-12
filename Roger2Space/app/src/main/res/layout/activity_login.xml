@@ -24,4 +24,15 @@
         android:layout_centerHorizontal="true"
         android:visibility="invisible"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Connection to Nasa Database..."
+        android:id="@+id/textViewConnection"
+        android:layout_below="@+id/progressBar"
+        android:textSize="14sp"
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible"/>
+
 </RelativeLayout>
