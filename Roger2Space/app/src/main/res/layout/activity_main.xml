@@ -205,10 +205,12 @@
             </com.github.glomadrian.dashedcircularprogress.DashedCircularProgress>
             <Button
                 android:id="@+id/butDragNDrop"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:background="@drawable/ic_bouton_drag_drop"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
 
                 android:text="Drag me ; Je suis le titre de la musique"
+                android:textColor="@color/button_material_light"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"/>
 

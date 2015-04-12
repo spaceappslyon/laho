@@ -173,11 +173,11 @@ public class MainActivity extends FragmentActivity {
                 @Override
                 public void onClick(View v) {
                     try {
+                        mNumberOfClicksView.setText("Number of analyzed sounds : "+mNumberOfClicks);
                         mScreen_1.setVisibility(View.VISIBLE);
                         mNavBarBut_1_border.setVisibility(View.VISIBLE);
                         mScreen_2.setVisibility(View.INVISIBLE);
                         mScreen_3_profile.setVisibility(View.INVISIBLE);
-                        mNumberOfClicksView.setText("Number of analyzed sounds : "+mNumberOfClicks);
                         mNavBarBut_2_border.setVisibility(View.INVISIBLE);
                         if(mProgressMusicBar != null)
                             mProgressMusicBar.reset();
