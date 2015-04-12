@@ -2,10 +2,13 @@ package com.laho.roger2space;
 
 import android.app.Activity;
 import android.app.DownloadManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -91,6 +94,9 @@ public class MainActivity extends FragmentActivity {
     Handler handlerProgressBar;
     ImageView[] mButChoix;
 
+    DownloadManager mDm ;
+    long mEnqueue;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -162,6 +168,8 @@ public class MainActivity extends FragmentActivity {
                         mScreen_2.setVisibility(View.INVISIBLE);
                         mScreen_3_profile.setVisibility(View.INVISIBLE);
                         mNavBarBut_2_border.setVisibility(View.INVISIBLE);
+                        if(mProgressMusicBar != null)
+                            mProgressMusicBar.reset();
 
                         if(mMediaPlayer != null && mMediaPlayer.isPlaying())
                             mMediaPlayer.stop();
@@ -198,7 +206,7 @@ public class MainActivity extends FragmentActivity {
                 @Override
                 public void onValueChange(float value) {
                     try {
-                        if (value >= mProgressMusicBar.getMax())
+                        if (value >= mProgressMusicBar.getMax() && mScreen_2.getVisibility() == View.VISIBLE)
                             startRandomMusic();
                     }catch (Exception e){
                         e.printStackTrace();
@@ -250,6 +258,41 @@ public class MainActivity extends FragmentActivity {
                 });
             }
 
+
+
+
+
+            // receiver for download
+
+            BroadcastReceiver receiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    String action = intent.getAction();
+                    if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(action)) {
+                        long downloadId = intent.getLongExtra(
+                                DownloadManager.EXTRA_DOWNLOAD_ID, 0);
+                        DownloadManager.Query query = new DownloadManager.Query();
+                        query.setFilterById(mEnqueue);
+                        Cursor c = mDm.query(query);
+                        if (c.moveToFirst()) {
+                            int columnIndex = c
+                                    .getColumnIndex(DownloadManager.COLUMN_STATUS);
+                            if (DownloadManager.STATUS_SUCCESSFUL == c
+                                    .getInt(columnIndex)) {
+
+                                String uriString = c
+                                        .getString(c
+                                                .getColumnIndex(DownloadManager.COLUMN_LOCAL_URI));
+                                Log.e("DOWNLOAD down",uriString);
+
+                            }
+                        }
+                    }
+                }
+            };
+
+            registerReceiver(receiver, new IntentFilter(
+                    DownloadManager.ACTION_DOWNLOAD_COMPLETE));
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -270,9 +313,22 @@ private void animateButtonToInitialPlace(){
        startRandomMusic();
 
 
-       //send music to stats!
+       // send music to stats!
        SendStats a = new SendStats("195.154.15.21", 3000);
        a.sendAsync(music, num);// title, choice
+
+
+       // download
+       if(num == 4){
+           downloadThisSound(music);
+           /*Intent sendIntent = new Intent(Intent.ACTION_SEND);
+           sendIntent.setClassName("com.android.mms", "com.android.mms.ui.ComposeMessageActivity");
+           sendIntent.putExtra("sms_body", "Hey, listen this music");
+           sendIntent.putExtra("address", send_to);
+           sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file:///sdcard/Test.vcf"));
+           sendIntent.setType("text/x-vcard");
+           startActivity(sendIntent);*/
+       }
    }
 
 
@@ -490,5 +546,27 @@ private void animateButtonToInitialPlace(){
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
         canvas.drawBitmap(bitmapimg, rect, rect, paint);
         return output;
+    }
+
+
+
+    public String downloadThisSound(String music){
+        String filepath;
+        filepath = "";
+
+        String url = URL_LIST+music;
+        try {
+            mDm= (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+            DownloadManager.Request request = new DownloadManager.Request(
+                    Uri.parse(url));
+            mEnqueue = mDm.enqueue(request);
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+        return filepath;
     }
 }

@@ -92,7 +92,7 @@
                     <ImageView
                         android:layout_width="1px"
                         android:layout_height="match_parent"
-                        android:src="@drawable/ac_1_launching_spacecraft"
+                        android:src="@drawable/ca_1_launching_spacecraft_2"
                         android:layout_weight="1"
                         android:scaleType="fitCenter"
                         android:id="@+id/choix_1"/>
@@ -124,7 +124,6 @@
                     <ImageView
                         android:layout_width="1px"
                         android:layout_height="match_parent"
-                        android:src="@drawable/ca_4_space_alien"
                         android:scaleType="fitCenter"
                         android:layout_weight="1"
                         android:id="@+id/choix_4"/>
@@ -135,7 +134,6 @@
                     <ImageView
                         android:layout_width="1px"
                         android:layout_height="match_parent"
-                        android:src="@drawable/ca_1_launching_spacecraft"
                         android:scaleType="fitCenter"
                         android:layout_weight="1"
                         android:id="@+id/choix_5"/>
@@ -152,21 +150,21 @@
                     <ImageView
                         android:layout_width="1px"
                         android:layout_height="match_parent"
-                        android:src="@drawable/ca_1_launching_spacecraft"
+                        android:src="@drawable/ca_4_space_alien_png"
                         android:scaleType="fitCenter"
                         android:layout_weight="1"
                         android:id="@+id/choix_6"/>
                     <ImageView
                         android:layout_width="1px"
                         android:layout_height="match_parent"
-                        android:src="@drawable/ca_1_launching_spacecraft"
+                        android:src="@drawable/ca_5_unidentify_sounds"
                         android:scaleType="fitCenter"
                         android:layout_weight="1"
                         android:id="@+id/choix_7"/>
                     <ImageView
                         android:layout_width="1px"
                         android:layout_height="match_parent"
-                        android:src="@drawable/ca_1_launching_spacecraft"
+                        android:src="@drawable/ca_6_radio_transmission"
                         android:scaleType="fitCenter"
                         android:layout_weight="1"
                         android:id="@+id/choix_8"/>
