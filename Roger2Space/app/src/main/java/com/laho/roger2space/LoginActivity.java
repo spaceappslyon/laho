@@ -7,9 +7,12 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ProgressBar;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.plus.PlusClient;
 
 public class LoginActivity extends FragmentActivity implements
@@ -37,12 +40,20 @@ public class LoginActivity extends FragmentActivity implements
             @Override
             public void onClick(View v) {
                 try {
+                    loadProgress(true);
                     plusClient.connect();
                 }catch (Exception e){
                     e.printStackTrace();
                 }
             }
         });
+    }
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        plusClient.disconnect();
     }
 
 
@@ -72,6 +83,7 @@ public class LoginActivity extends FragmentActivity implements
 
     @Override
     public void onDisconnected() {
+        loadProgress(false);
         Log.d("DISCONNECTED", "disconnected");
     }
 
@@ -83,9 +95,26 @@ public class LoginActivity extends FragmentActivity implements
         }
     }
 
-    @Override
-    public void onClick(View v) {
-
+    public void loadProgress(Boolean isLoading){
+        Log.e("YEAH","1");
+        try {
+            SignInButton log = (SignInButton) findViewById(R.id.google_sign_in_button);
+            ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
+            View textViewConnection = (View) findViewById(R.id.textViewConnection);
+            if (isLoading) {
+                log.setEnabled(false);
+                progressBar.setVisibility(View.VISIBLE);
+                textViewConnection.setVisibility(View.VISIBLE);
+                Log.e("YEAH","2");
+            } else {
+                log.setEnabled(true);
+                progressBar.setVisibility(View.INVISIBLE);
+                textViewConnection.setVisibility(View.INVISIBLE);
+                Log.e("YEAH","3");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -97,5 +126,11 @@ public class LoginActivity extends FragmentActivity implements
                 plusClient.connect();
             }
         }
+        loadProgress(false);
+    }
+
+    @Override
+    public void onClick(View v) {
+
     }
 }
