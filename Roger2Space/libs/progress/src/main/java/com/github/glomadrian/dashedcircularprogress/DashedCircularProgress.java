@@ -227,6 +227,12 @@ public class DashedCircularProgress extends RelativeLayout {
         }
     }
 
+    public void setIconBitmap(Bitmap drawable) {
+        if (iconPainter != null) {
+            iconPainter.setImage(drawable);
+        }
+    }
+
     public void reset() {
         last = min;
     }
