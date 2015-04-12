@@ -59,6 +59,9 @@ public class MainActivity extends FragmentActivity {
     View mNavBarBut_2;
     View mNavBarBut_2_border;
     Button mButDragNDrop;
+    int[] MbutDragNDropBase = {0,0};
+
+
     Float mButDragNDrop_x;
     Float mButDragNDrop_y;
 
@@ -179,6 +182,8 @@ public class MainActivity extends FragmentActivity {
 
             // button drag n drop
             mButDragNDrop = (Button) findViewById(R.id.butDragNDrop);
+
+
             mButDragNDrop.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(final View v, MotionEvent me) {
@@ -213,26 +218,8 @@ public class MainActivity extends FragmentActivity {
                 mButChoix[i].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(getBaseContext(), "HEYY you did the "+(num)+" choice !", Toast.LENGTH_LONG).show();
-                        final String music = mButDragNDrop.getText().toString();
 
-
-                        // anim change music
-                        Animation outAnim = new AlphaAnimation(1.0f,0.0f);
-                        outAnim.setDuration(500);
-                        outAnim.setRepeatMode(Animation.REVERSE);
-                        outAnim.setRepeatCount(1);
-                        mButDragNDrop.startAnimation(outAnim);
-
-
-                        // random new music
-                        startRandomMusic();
-
-
-                        //send music to stats!
-                        SendStats a = new SendStats("195.154.15.21", 3000);
-                        a.sendAsync(music, num);// title, choice
-
+                        onSelectChoice(num);
                     }
                 });
             }
@@ -243,30 +230,38 @@ public class MainActivity extends FragmentActivity {
     }
 
 
-    /**
-     * @param context used to check the device version and DownloadManager information
-     * @return true if the download manager is available
-     */
-    public static boolean isDownloadManagerAvailable(Context context) {
-        try {
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.GINGERBREAD) {
-                return false;
-            }
-            Intent intent = new Intent(Intent.ACTION_MAIN);
-            intent.addCategory(Intent.CATEGORY_LAUNCHER);
-            intent.setClassName("com.android.providers.downloads.ui", "com.android.providers.downloads.ui.DownloadList");
-            List<ResolveInfo> list = context.getPackageManager().queryIntentActivities(intent,
-                    PackageManager.MATCH_DEFAULT_ONLY);
-            return list.size() > 0;
-        } catch (Exception e) {
-            return false;
-        }
-    }
+   private void onSelectChoice(int num){
+       Toast.makeText(getBaseContext(), "HEYY you did the "+(num)+" choice !", Toast.LENGTH_SHORT).show();
+       final String music = mButDragNDrop.getText().toString();
+
+
+       // anim change music
+
+       Animation outAnim = new AlphaAnimation(1.0f,0.0f);
+       outAnim.setDuration(500);
+       outAnim.setRepeatMode(Animation.REVERSE);
+       outAnim.setRepeatCount(1);
+
+
+
+       mButDragNDrop.setX(mScreen_1.getHeight()/2);
+       mButDragNDrop.setY(mScreen_1.getWidth()/4);
+       mButDragNDrop.startAnimation(outAnim);
+
+
+       // random new music
+       startRandomMusic();
+
+
+       //send music to stats!
+       SendStats a = new SendStats("195.154.15.21", 3000);
+       a.sendAsync(music, num);// title, choice
+   }
 
 
 
 
-    private void selectButtonFromSwipe(float rawX, float rawY) {
+    private boolean selectButtonFromSwipe(float rawX, float rawY) {
         int choixImage = 0;
         for(ImageView choix : mButChoix){
             View parent = (View)choix.getParent();
@@ -277,14 +272,13 @@ public class MainActivity extends FragmentActivity {
             yPlusWidth = y + choix.getHeight();
 
             if(rawX > x && rawX < xPlusWidth && rawY > y && rawY < yPlusWidth){
-                Toast.makeText(getBaseContext(), "HEYY you did the "+(choixImage)+" choice !", Toast.LENGTH_SHORT).show();
-               // startRandomMusic();
-                return;
+              onSelectChoice(choixImage);
+                return true;
             }
             choixImage++;
         }
 
-
+    return false;
     }
 
 
